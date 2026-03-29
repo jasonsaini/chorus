@@ -25,7 +25,7 @@ spring:
           model: claude-sonnet-4-20250514
 
 server:
-  port: 8080
+  port: ${PORT:8080}
 
 chorus:
   ai:
