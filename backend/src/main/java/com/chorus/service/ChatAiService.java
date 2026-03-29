@@ -5,6 +5,7 @@ import com.chorus.domain.ChatMessage;
 import com.chorus.domain.MessageType;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import org.springframework.ai.chat.messages.AssistantMessage;
 import org.springframework.ai.chat.messages.Message;
 import org.springframework.ai.chat.messages.SystemMessage;
@@ -33,9 +34,11 @@ public class ChatAiService {
         return content != null && content.toLowerCase().contains("@claude");
     }
 
-    public String generate(List<ChatMessage> historyTail) {
+    public String generate(List<ChatMessage> historyTail, Optional<String> repoContext) {
         List<Message> messages = new ArrayList<>();
         messages.add(new SystemMessage(SYSTEM));
+        repoContext.ifPresent(ctx ->
+                messages.add(new SystemMessage("## Linked repository context\n\n" + ctx)));
         for (ChatMessage cm : historyTail) {
             if (cm.type() == MessageType.USER) {
                 messages.add(new UserMessage(cm.sender() + ": " + cm.content()));

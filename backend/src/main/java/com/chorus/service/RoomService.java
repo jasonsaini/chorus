@@ -47,7 +47,7 @@ public class RoomService {
         Instant now = Instant.now();
         RoomEntity entity = new RoomEntity(id, id, createdBy, now);
         roomRepository.save(entity);
-        return new Room(id, id, createdBy, now, List.of(), Set.of());
+        return new Room(id, id, createdBy, now, List.of(), Set.of(), null, null);
     }
 
     @Transactional(readOnly = true)
@@ -112,6 +112,28 @@ public class RoomService {
         return new ArrayList<>(window);
     }
 
+    @Transactional
+    public void storeGithubToken(String roomId, String token) {
+        roomRepository.findById(roomId).ifPresent(room -> {
+            room.setGithubAccessToken(token);
+            roomRepository.save(room);
+        });
+    }
+
+    @Transactional
+    public void linkRepo(String roomId, String repoFullName, String branch) {
+        roomRepository.findById(roomId).ifPresent(room -> {
+            room.setLinkedRepo(repoFullName);
+            room.setLinkedBranch(branch != null && !branch.isBlank() ? branch : "main");
+            roomRepository.save(room);
+        });
+    }
+
+    @Transactional(readOnly = true)
+    public Optional<String> getGithubToken(String roomId) {
+        return roomRepository.findById(roomId).map(RoomEntity::getGithubAccessToken);
+    }
+
     private Room toDomain(RoomEntity entity) {
         List<ChatMessage> messages = messageRepository.findByRoom_RoomIdOrderByIdAsc(entity.getRoomId()).stream()
                 .map(this::toChatMessage)
@@ -125,7 +147,9 @@ public class RoomService {
                 entity.getCreatedBy(),
                 entity.getCreatedAt(),
                 messages,
-                participants);
+                participants,
+                entity.getLinkedRepo(),
+                entity.getLinkedBranch());
     }
 
     private ChatMessage toChatMessage(RoomMessageEntity entity) {

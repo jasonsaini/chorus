@@ -8,6 +8,7 @@ public class ChorusProperties {
 
     private final Ai ai = new Ai();
     private final Cors cors = new Cors();
+    private final Github github = new Github();
 
     public Ai getAi() {
         return ai;
@@ -15,6 +16,10 @@ public class ChorusProperties {
 
     public Cors getCors() {
         return cors;
+    }
+
+    public Github getGithub() {
+        return github;
     }
 
     public static class Cors {
@@ -66,5 +71,35 @@ public class ChorusProperties {
     public enum Trigger {
         always,
         mention
+    }
+
+    public static class Github {
+        private String clientId = "";
+        private String clientSecret = "";
+        private String frontendUrl = "http://localhost:5173";
+
+        public String getClientId() {
+            return clientId;
+        }
+
+        public void setClientId(String clientId) {
+            this.clientId = clientId;
+        }
+
+        public String getClientSecret() {
+            return clientSecret;
+        }
+
+        public void setClientSecret(String clientSecret) {
+            this.clientSecret = clientSecret;
+        }
+
+        public String getFrontendUrl() {
+            return frontendUrl;
+        }
+
+        public void setFrontendUrl(String frontendUrl) {
+            this.frontendUrl = frontendUrl;
+        }
     }
 }

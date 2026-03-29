@@ -3,6 +3,7 @@ package com.chorus.web;
 import com.chorus.domain.ChatMessage;
 import com.chorus.service.RoomService;
 import com.chorus.web.dto.CreateRoomRequest;
+import com.chorus.web.dto.LinkRepoRequest;
 import com.chorus.web.dto.RoomDetailResponse;
 import com.chorus.web.dto.RoomResponse;
 import io.swagger.v3.oas.annotations.Operation;
@@ -39,6 +40,16 @@ public class RoomRestController {
         return ResponseEntity.status(HttpStatus.CREATED).body(body);
     }
 
+    @PostMapping("/{roomId}/repo")
+    @Operation(summary = "Link a GitHub repo to the room")
+    public ResponseEntity<Void> linkRepo(@PathVariable String roomId, @Valid @RequestBody LinkRepoRequest request) {
+        if (roomService.getRoom(roomId).isEmpty()) {
+            return ResponseEntity.notFound().build();
+        }
+        roomService.linkRepo(roomId, request.repoFullName(), request.branch());
+        return ResponseEntity.ok().build();
+    }
+
     @GetMapping("/{roomId}")
     @Operation(summary = "Get room, participants, and persisted message history (USER and AI only)")
     public ResponseEntity<RoomDetailResponse> get(@PathVariable String roomId) {
@@ -47,7 +58,9 @@ public class RoomRestController {
                 .map(room -> {
                     List<String> participants = new ArrayList<>(room.getParticipants());
                     List<ChatMessage> messages = List.copyOf(room.getMessages());
-                    return ResponseEntity.ok(new RoomDetailResponse(room.getRoomId(), participants, messages));
+                    return ResponseEntity.ok(new RoomDetailResponse(
+                            room.getRoomId(), participants, messages,
+                            room.getLinkedRepo(), room.getLinkedBranch()));
                 })
                 .orElseGet(() -> ResponseEntity.notFound().build());
     }

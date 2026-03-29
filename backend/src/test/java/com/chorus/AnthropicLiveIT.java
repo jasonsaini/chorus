@@ -6,6 +6,7 @@ import com.chorus.domain.ChatMessage;
 import com.chorus.domain.MessageType;
 import com.chorus.service.ChatAiService;
 import java.util.List;
+import java.util.Optional;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.condition.EnabledIfEnvironmentVariable;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,7 +31,7 @@ class AnthropicLiveIT {
     void generateCallsClaudeAndReturnsNonEmptyReply() {
         List<ChatMessage> history =
                 List.of(ChatMessage.of(MessageType.USER, "Tester", "Reply with only the single word: pong"));
-        String reply = chatAiService.generate(history);
+        String reply = chatAiService.generate(history, Optional.empty());
         System.out.println();
         System.out.println("=== AnthropicLiveIT: Claude reply ===");
         System.out.println(reply);

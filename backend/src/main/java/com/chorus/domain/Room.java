@@ -16,6 +16,8 @@ public class Room {
     private final Instant createdAt;
     private final List<ChatMessage> messages;
     private final Set<String> participants;
+    private final String linkedRepo;
+    private final String linkedBranch;
 
     public Room(
             String roomId,
@@ -23,13 +25,17 @@ public class Room {
             String createdBy,
             Instant createdAt,
             List<ChatMessage> messages,
-            Set<String> participants) {
+            Set<String> participants,
+            String linkedRepo,
+            String linkedBranch) {
         this.roomId = roomId;
         this.inviteCode = inviteCode;
         this.createdBy = createdBy;
         this.createdAt = createdAt;
         this.messages = List.copyOf(messages);
         this.participants = new LinkedHashSet<>(participants);
+        this.linkedRepo = linkedRepo;
+        this.linkedBranch = linkedBranch;
     }
 
     public String getRoomId() {
@@ -54,5 +60,13 @@ public class Room {
 
     public Set<String> getParticipants() {
         return participants;
+    }
+
+    public String getLinkedRepo() {
+        return linkedRepo;
+    }
+
+    public String getLinkedBranch() {
+        return linkedBranch;
     }
 }

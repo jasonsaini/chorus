@@ -23,6 +23,15 @@ public class RoomEntity {
     @Column(nullable = false)
     private Instant createdAt;
 
+    @Column(length = 512)
+    private String githubAccessToken;
+
+    @Column(length = 256)
+    private String linkedRepo;
+
+    @Column(length = 256)
+    private String linkedBranch;
+
     protected RoomEntity() {}
 
     public RoomEntity(String roomId, String inviteCode, String createdBy, Instant createdAt) {
@@ -46,5 +55,29 @@ public class RoomEntity {
 
     public Instant getCreatedAt() {
         return createdAt;
+    }
+
+    public String getGithubAccessToken() {
+        return githubAccessToken;
+    }
+
+    public void setGithubAccessToken(String githubAccessToken) {
+        this.githubAccessToken = githubAccessToken;
+    }
+
+    public String getLinkedRepo() {
+        return linkedRepo;
+    }
+
+    public void setLinkedRepo(String linkedRepo) {
+        this.linkedRepo = linkedRepo;
+    }
+
+    public String getLinkedBranch() {
+        return linkedBranch;
+    }
+
+    public void setLinkedBranch(String linkedBranch) {
+        this.linkedBranch = linkedBranch;
     }
 }
