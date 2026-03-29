@@ -17,6 +17,7 @@ TODOS:
 - [ ] Some sort of coding collaborative interface
 - [ ] Notify Claude when users are kicked from the chat
 - [ ] Add markdown formatting for Claude messages
+- [ ] Fix rooms closing unexpectedly
 ---
 
 ## Monorepo Structure
