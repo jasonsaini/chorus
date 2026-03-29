@@ -16,6 +16,7 @@ TODOS:
 - [ ] Pull in Github repos for context
 - [ ] Some sort of coding collaborative interface
 - [ ] Notify Claude when users are kicked from the chat
+- [ ] Add markdown formatting for Claude messages
 ---
 
 ## Monorepo Structure
