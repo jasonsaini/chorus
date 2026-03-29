@@ -1,0 +1,4 @@
+backend/data/
+backend/target/
+*.mv.db
+*.trace.db

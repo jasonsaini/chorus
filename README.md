@@ -27,7 +27,8 @@ chorus/
 
 | Layer | Technology |
 |---|---|
-| Backend | Java 21, Spring Boot 3, Spring WebSocket (STOMP), Spring AI |
+| Backend | Java 21, Spring Boot 3, Spring WebSocket (STOMP), Spring AI, Spring Data JPA |
+| Storage | H2 (file-backed by default; see `CHORUS_DATA_DIR`) |
 | LLM | Anthropic Claude (via Spring AI) |
 | Frontend | React, SockJS, STOMP.js |
 | Real-time | WebSocket with SockJS fallback |
@@ -54,6 +55,8 @@ cp src/main/resources/application.example.yml src/main/resources/application.yml
 ```
 
 Server runs on `http://localhost:8080`.
+
+Rooms, participants, and chat lines (`USER` and `AI` only) are stored under `data/` (or `CHORUS_DATA_DIR` if set) as H2 files so restarts keep history. Ephemeral WebSocket events (`JOIN`, `LEAVE`, `AI_TYPING`, `ERROR`) are not part of that replayable history.
 
 ---
 
@@ -137,7 +140,7 @@ Response 200:
 }
 ```
 
-Call this on page load to replay history after a refresh.
+Call this on page load to replay history after a refresh. Persisted messages are **`USER` and `AI` only**; live-only events (`JOIN`, `LEAVE`, `AI_TYPING`, `ERROR`) come from WebSockets. See `docs/contract.md` for full behavior.
 
 ---
 
@@ -159,6 +162,7 @@ chorus:
 |---|---|
 | `ANTHROPIC_API_KEY` | Your Anthropic API key |
 | `CHORUS_ALLOWED_ORIGINS` | Comma-separated frontend origins (default: `http://localhost:3000`) |
+| `CHORUS_DATA_DIR` | Directory for H2 database files (default: `./data` relative to where you run the server) |
 
 ---
 
