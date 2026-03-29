@@ -9,6 +9,14 @@ Chorus lets multiple people share a single AI context window — think of it as 
 Built as a monorepo with a Spring Boot backend and a JavaScript frontend.
 
 ---
+TODOS: 
+### Pending Items / Future Features
+
+- [ ] Different colors for users on the frontend
+- [ ] Pull in Github repos for context
+- [ ] Some sort of coding collaborative interface
+- [ ] Notify Claude when users are kicked from the chat
+---
 
 ## Monorepo Structure
 
