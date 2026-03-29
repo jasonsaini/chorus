@@ -1,0 +1,10 @@
+# Netlify: deploy the Vite app in /frontend (monorepo).
+# Set VITE_API_ORIGIN in the Netlify UI (Site → Environment variables), e.g.
+# https://chorus-dev-5e08.up.railway.app — then trigger a new deploy.
+
+[build]
+  command = "cd frontend && npm ci && npm run build"
+  publish = "frontend/dist"
+
+[build.environment]
+  NODE_VERSION = "20"
