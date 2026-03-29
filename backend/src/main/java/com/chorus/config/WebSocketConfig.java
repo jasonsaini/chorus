@@ -19,9 +19,11 @@ public class WebSocketConfig implements WebSocketMessageBrokerConfigurer {
 
     @Override
     public void configureMessageBroker(MessageBrokerRegistry registry) {
+        var scheduler = new ThreadPoolTaskScheduler();
+        scheduler.initialize();
         registry.enableSimpleBroker("/topic")
                 .setHeartbeatValue(new long[]{25000, 25000})
-                .setTaskScheduler(new ThreadPoolTaskScheduler());
+                .setTaskScheduler(scheduler);
         registry.setApplicationDestinationPrefixes("/app");
     }
 
