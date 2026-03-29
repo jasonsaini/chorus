@@ -1,3 +1,6 @@
+# Copy to application.yml and set your API key:
+#   cp src/main/resources/application.example.yml src/main/resources/application.yml
+
 spring:
   application:
     name: chorus-backend
@@ -16,7 +19,7 @@ spring:
           time_zone: UTC
   ai:
     anthropic:
-      api-key: ${ANTHROPIC_API_KEY:}
+      api-key: ${ANTHROPIC_API_KEY:your-key-here}
       chat:
         options:
           model: claude-sonnet-4-20250514
@@ -26,11 +29,13 @@ server:
 
 chorus:
   ai:
+    # always: Claude responds to every message
+    # mention: Claude only when the message contains @claude
     trigger: always
   cors:
     allowed-origins: ${CHORUS_ALLOWED_ORIGINS:http://localhost:3000}
-  # Optional: set when serving API docs from another host (e.g. http://192.168.1.10:8080)
   open-api:
+    # Optional: e.g. http://192.168.1.10:8080 so “Try it out” uses your LAN IP
     server-url: ${CHORUS_OPENAPI_SERVER_URL:}
 
 springdoc:
