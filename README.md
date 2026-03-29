@@ -56,6 +56,8 @@ cp src/main/resources/application.example.yml src/main/resources/application.yml
 
 Server runs on `http://localhost:8080`.
 
+OpenAPI/Swagger UI: **`http://localhost:8080/swagger-ui.html`** (JSON: `/v3/api-docs`). WebSocket/STOMP is not listed there; see `docs/contract.md`.
+
 Rooms, participants, and chat lines (`USER` and `AI` only) are stored under `data/` (or `CHORUS_DATA_DIR` if set) as H2 files so restarts keep history. Ephemeral WebSocket events (`JOIN`, `LEAVE`, `AI_TYPING`, `ERROR`) are not part of that replayable history.
 
 ---
@@ -163,6 +165,7 @@ chorus:
 | `ANTHROPIC_API_KEY` | Your Anthropic API key |
 | `CHORUS_ALLOWED_ORIGINS` | Comma-separated frontend origins (default: `http://localhost:3000`) |
 | `CHORUS_DATA_DIR` | Directory for H2 database files (default: `./data` relative to where you run the server) |
+| `CHORUS_OPENAPI_SERVER_URL` | Optional base URL for OpenAPI “Servers” dropdown (e.g. `http://your-lan-ip:8080`) |
 
 ---
 

@@ -5,6 +5,8 @@ import com.chorus.service.RoomService;
 import com.chorus.web.dto.CreateRoomRequest;
 import com.chorus.web.dto.RoomDetailResponse;
 import com.chorus.web.dto.RoomResponse;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import java.util.ArrayList;
 import java.util.List;
@@ -19,6 +21,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequestMapping("/api/rooms")
+@Tag(name = "Rooms", description = "REST room API. Real-time messaging uses STOMP over /ws — see docs/contract.md.")
 public class RoomRestController {
 
     private final RoomService roomService;
@@ -28,6 +31,7 @@ public class RoomRestController {
     }
 
     @PostMapping
+    @Operation(summary = "Create a room")
     public ResponseEntity<RoomResponse> create(@Valid @RequestBody CreateRoomRequest request) {
         var room = roomService.createRoom(request.createdBy());
         RoomResponse body =
@@ -36,6 +40,7 @@ public class RoomRestController {
     }
 
     @GetMapping("/{roomId}")
+    @Operation(summary = "Get room, participants, and persisted message history (USER and AI only)")
     public ResponseEntity<RoomDetailResponse> get(@PathVariable String roomId) {
         return roomService
                 .getRoom(roomId)

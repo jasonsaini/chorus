@@ -7,6 +7,7 @@ This document is the source of truth for the HTTP and WebSocket API between the 
 ## Base URL
 
 - Local default: `http://localhost:8080`
+- OpenAPI description (REST only): `/v3/api-docs` — interactive docs: `/swagger-ui.html`
 - WebSocket/SockJS endpoint path: `/ws` (browser URL is typically `http://localhost:8080/ws` with SockJS)
 
 ---
