@@ -1,3 +1,5 @@
+.idea/
+
 backend/data/
 backend/target/
 *.mv.db
