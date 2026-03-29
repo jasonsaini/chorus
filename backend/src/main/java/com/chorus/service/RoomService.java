@@ -1,5 +1,6 @@
 package com.chorus.service;
 
+import com.chorus.config.ChorusProperties;
 import com.chorus.domain.ChatMessage;
 import com.chorus.domain.MessageType;
 import com.chorus.domain.Room;
@@ -10,6 +11,8 @@ import com.chorus.persistence.RoomMessageRepository;
 import com.chorus.persistence.RoomParticipantEntity;
 import com.chorus.persistence.RoomParticipantRepository;
 import java.time.Instant;
+import java.util.ArrayDeque;
+import java.util.ArrayList;
 import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Optional;
@@ -25,14 +28,17 @@ public class RoomService {
     private final RoomJpaRepository roomRepository;
     private final RoomMessageRepository messageRepository;
     private final RoomParticipantRepository participantRepository;
+    private final ChorusProperties chorusProperties;
 
     public RoomService(
             RoomJpaRepository roomRepository,
             RoomMessageRepository messageRepository,
-            RoomParticipantRepository participantRepository) {
+            RoomParticipantRepository participantRepository,
+            ChorusProperties chorusProperties) {
         this.roomRepository = roomRepository;
         this.messageRepository = messageRepository;
         this.participantRepository = participantRepository;
+        this.chorusProperties = chorusProperties;
     }
 
     @Transactional
@@ -86,10 +92,24 @@ public class RoomService {
 
     @Transactional(readOnly = true)
     public List<ChatMessage> conversationForModel(String roomId) {
-        return messageRepository.findByRoom_RoomIdOrderByIdAsc(roomId).stream()
+        List<ChatMessage> all = messageRepository.findByRoom_RoomIdOrderByIdAsc(roomId).stream()
                 .filter(m -> m.getType() == MessageType.USER || m.getType() == MessageType.AI)
                 .map(this::toChatMessage)
                 .toList();
+        return applyTokenBudget(all, chorusProperties.getAi().getMaxContextTokens());
+    }
+
+    private List<ChatMessage> applyTokenBudget(List<ChatMessage> messages, int maxTokens) {
+        var window = new ArrayDeque<ChatMessage>();
+        int tokens = 0;
+        for (int i = messages.size() - 1; i >= 0; i--) {
+            ChatMessage m = messages.get(i);
+            int est = (m.sender().length() + m.content().length()) / 4 + 4;
+            if (tokens + est > maxTokens) break;
+            window.addFirst(m);
+            tokens += est;
+        }
+        return new ArrayList<>(window);
     }
 
     private Room toDomain(RoomEntity entity) {

@@ -43,12 +43,23 @@ public class ChorusProperties {
          */
         private Trigger trigger = Trigger.always;
 
+        /** Approximate token budget for conversation history sent to Claude. */
+        private int maxContextTokens = 8_000;
+
         public Trigger getTrigger() {
             return trigger;
         }
 
         public void setTrigger(Trigger trigger) {
             this.trigger = trigger;
+        }
+
+        public int getMaxContextTokens() {
+            return maxContextTokens;
+        }
+
+        public void setMaxContextTokens(int maxContextTokens) {
+            this.maxContextTokens = maxContextTokens;
         }
     }
 

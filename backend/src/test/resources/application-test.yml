@@ -6,3 +6,6 @@ spring:
   jpa:
     hibernate:
       ddl-auto: create-drop
+  ai:
+    anthropic:
+      api-key: ${ANTHROPIC_API_KEY:}

@@ -60,6 +60,16 @@ OpenAPI/Swagger UI: **`http://localhost:8080/swagger-ui.html`** (JSON: `/v3/api-
 
 Rooms, participants, and chat lines (`USER` and `AI` only) are stored under `data/` (or `CHORUS_DATA_DIR` if set) as H2 files so restarts keep history. Ephemeral WebSocket events (`JOIN`, `LEAVE`, `AI_TYPING`, `ERROR`) are not part of that replayable history.
 
+**Optional — verify Claude end-to-end (uses your API key; small usage cost):**
+
+```bash
+cd backend
+export ANTHROPIC_API_KEY=sk-ant-api03-...
+./mvnw test -Dtest=AnthropicLiveIT
+```
+
+`AnthropicLiveIT` is **skipped** when `ANTHROPIC_API_KEY` is unset. Default `./mvnw test` keeps a mocked `ChatModel` and does not call Anthropic.
+
 ---
 
 ### Frontend
